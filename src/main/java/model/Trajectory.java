@@ -2,6 +2,7 @@ package model;
 
 import interfaces.CatalogPanel;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,28 +14,32 @@ public class Trajectory {
     private static int size = 1;
 
     public Trajectory(FileData fileData){
-        name = new StringBuilder("Траектория ").append(size).toString();
         file = fileData;
         points = new ArrayList<>();
         readTrajectoryFile(fileData.getData());
-        size++;
+        if (!setTrajectoryName()) {
+            name = new StringBuilder("Траектория ").append(size).toString();
+            size++;
+        }
     }
 
     public String getTrajectoryName(){
         return name;
     }
 
-    public void setTrajectoryName(String name){
-        List<String> trajectoriesNames = new ArrayList<>();
+    public boolean setTrajectoryName(){
+        String name = JOptionPane.showInputDialog(null, "Введите имя траектории");
         for (Trajectory trajectory : CatalogPanel.getTrajectories()) {
-            trajectoriesNames.add(trajectory.getTrajectoryName());
+            if (trajectory.getTrajectoryName().equals(name)){
+                JOptionPane.showConfirmDialog(null, "Данное имя уже существует");
+            }
+            return false;
         }
-        if (trajectoriesNames.contains(name)){
-            System.out.println("This name already exists, try to enter another one\n");
-        }
-        else {
+        if (name != null && name != "") {
             this.name = name;
+            return true;
         }
+        return false;
     }
 
     public List<Point> getPoints(){

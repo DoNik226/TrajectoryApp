@@ -149,6 +149,8 @@ public class SettingsPanel extends JPanel {
                             chosenTrajectory = trajectory;
                         }
                     }
+                    String oldPath = chosenTrajectory.getFilePath();
+                    String oldName = chosenTrajectory.getFileName();
                     String newName = JOptionPane.showInputDialog(null, "Введите новое имя файла");
                     if (newName != null) {
                         String newPath = new StringBuilder(chosenTrajectory.getFilePath().substring(0, chosenTrajectory.getFilePath().lastIndexOf('/')+1)).append(newName).toString();
@@ -160,6 +162,11 @@ public class SettingsPanel extends JPanel {
                         }
                         FilePanel.setFileName(newPath);
                         chosenTrajectory.setFilePath(newName);
+                        openedFiles.remove(oldPath);
+                        openedFiles.add(newPath);
+                        listModel.addElement(newName);
+                        listModel.removeElement(oldName);
+                        savePreviouslyOpenFiles();
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Нет открытых файлов");
@@ -254,7 +261,7 @@ public class SettingsPanel extends JPanel {
         if (fileExist == 0) {
             chosenTrajectory = CatalogPanel.addTrajectory(file);
         }
-        if (!CatalogPanel.checkListModel(chosenTrajectory.getTrajectoryName())) {
+        if (chosenTrajectory != null && !CatalogPanel.checkListModel(chosenTrajectory.getTrajectoryName())) {
             CatalogPanel.addElementAtList(chosenTrajectory.getTrajectoryName());
             if (!listModel.contains(chosenTrajectory.getFileName())) {
                 listModel.addElement(chosenTrajectory.getFileName());

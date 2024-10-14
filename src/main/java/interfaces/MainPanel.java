@@ -20,8 +20,8 @@ public class MainPanel extends JPanel{
 
         catalogPanel = new CatalogPanel();
         settingsPanel = new SettingsPanel();
-        tablePanel = new TablePanel();
         graphsPanel = new GraphsPanel();
+        tablePanel = new TablePanel();
         filePanel = new FilePanel();
         panelRight = new JSplitPane(JSplitPane.VERTICAL_SPLIT, tablePanel, graphsPanel);
         panelLeft = new JSplitPane(JSplitPane.VERTICAL_SPLIT, catalogPanel, filePanel);

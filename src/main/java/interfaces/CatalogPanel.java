@@ -71,6 +71,7 @@ public class CatalogPanel extends JPanel {
                         }
                     }
                     if (SettingsPanel.getChosenTrajectory().getTrajectoryName().equals(selectedValue)) {
+                        deleteTrajectory(SettingsPanel.getChosenTrajectory().getTrajectoryName());
                         FilePanel.clearText();
                         TablePanel.clearTable();
                         SettingsPanel.setFile(null);
@@ -78,7 +79,6 @@ public class CatalogPanel extends JPanel {
                         SettingsPanel.setFlag(false);
                     }
                     listModel.removeElement(selectedValue);
-                    deleteTrajectory(SettingsPanel.getChosenTrajectory().getTrajectoryName());
                 }
             }
         });
@@ -126,9 +126,13 @@ public class CatalogPanel extends JPanel {
 
     public static Trajectory addTrajectory(File file){
         FileData fileData = new FileData(file);
-        Trajectory trajectory = new Trajectory(fileData);
-        trajectories.add(trajectory);
-        return trajectory;
+        if (fileData.fileIsCorrect()) {
+            Trajectory trajectory = new Trajectory(fileData);
+            trajectories.add(trajectory);
+            return trajectory;
+        } else {
+            return null;
+        }
     }
 
     public static void deleteTrajectory(String name){

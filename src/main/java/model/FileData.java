@@ -99,4 +99,8 @@ public class FileData {
     public void setData(List<String> data) {
         this.data = data;
     }
+
+    public boolean fileIsCorrect() {
+        return incorrectStrings.isEmpty();
+    }
 }
